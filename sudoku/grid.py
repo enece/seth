@@ -4,6 +4,10 @@ import itertools
 from sudoku.sample.grid_data import data as sample_data
 
 
+GRID_RANGE_OBJECT = range(1, 10)
+GRID_RANGE_LIST = list(GRID_RANGE_OBJECT)
+
+
 class Grid:
     class _InputRow:
         def __init__(self, row_number: int, test_mode: bool):
@@ -36,14 +40,14 @@ class Grid:
 
             return input_
 
-    class Cell:
+    class Cell(object):
         def __init__(self, gid: tuple):
             self.gid = gid
             self.column = gid[0]
             self.row = gid[1]
             self.subgrid = self._get_subgrid()
             self.value = None
-            self.possibilities = {i for i in range(1, 10)}
+            self.possibilities = {i for i in GRID_RANGE_OBJECT}
 
         def _get_subgrid(self):
             column_band = math.ceil(self.column / 3)
@@ -64,7 +68,7 @@ class Grid:
         def append_first_row(self):
             data = self
             data += '\n\t  '
-            for i in range(1, 10):
+            for i in GRID_RANGE_OBJECT:
                 data += f'   {str(i)}  '
             data += '\n'
             return data
@@ -110,7 +114,7 @@ class Grid:
         print(initial_grid_instructions)
 
     def _intake_initial_grid_rows(self):
-        for i in range(1, 10):
+        for i in GRID_RANGE_OBJECT:
             while True:
                 try:
                     self.initial_grid_rows[i] = self._InputRow(row_number=i, test_mode=self.test_mode)
@@ -120,7 +124,7 @@ class Grid:
                     pass
 
     def _initialize_cells(self):
-        grid_structure_range = [i for i in range(1, 10)]
+        grid_structure_range = [i for i in GRID_RANGE_OBJECT]
         cell_range = itertools.product(*[grid_structure_range for i in range(2)])
         for cell in cell_range:
             self.cells[cell] = self.Cell(gid=cell)
@@ -179,7 +183,7 @@ class Grid:
         grid_markup = self.GridMarkup()
         grid_markup = self.GridMarkup(grid_markup.append_first_row())
         grid_markup = self.GridMarkup(grid_markup.append_row_divider())
-        for i in range(1, 10):
+        for i in GRID_RANGE_OBJECT:
             cells_in_row = self.get_cells_in_row(row_number=i)
             grid_markup = self.GridMarkup(grid_markup.append_row_by_row_number(row_number=i, cells=cells_in_row))
             grid_markup = self.GridMarkup(grid_markup.append_row_divider())

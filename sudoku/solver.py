@@ -1,7 +1,7 @@
 from grid import Grid
 
 
-grid = Grid()
+grid = Grid(test_mode=True)
 print(grid)
 
 
